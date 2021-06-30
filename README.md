@@ -1,58 +1,52 @@
-# Project Name
-hey this is sin
+# MOODS :):
+
+
 ## Description
 
-Describe your project in one/two lines.
+MOODS is an app that enables users to track their moods on a regular basis. The aim is to help users, especially those with relevant disorders, to feel more in control and aware of factors that influence their emotions.
+
  
 ## User Stories
 
-- **404** - As a user I want to see a nice 404 page when I go to a page that doesn’t exist so that I know it was my fault 
+- **404** - As a user I want to see a nice encouraging 404 page when I go to a page that doesn’t exist
 - **500** - As a user I want to see a nice error page when the super team screws it up so that I know that is not my fault
-- **homepage** - As a user I want to be able to access the homepage so that I see what the app is about and login and signup
-- **sign up** - As a user I want to sign up on the webpage so that I can see all the events that I could attend
-- **login** - As a user I want to be able to log in on the webpage so that I can get back to my account
-- **logout** - As a user I want to be able to log out from the webpage so that I can make sure no one will access my account
-- **events list** - As a user I want to see all the events available so that I can choose which ones I want to attend
-- **events create** - As a user I want to create an event so that I can invite others to attend
-- **events detail** - As a user I want to see the event details and attendee list of one event so that I can decide if I want to attend 
-- **event attend** - As a user I want to be able to attend to event so that the organizers can count me in
+- **homepage** - As a user I want to be able to access the homepage so that I can easily see what the app is about and where to login and signup
+- **sign up** - As a user I want to sign up without much effort to join the app. I also want to see my privacy concerns to be taken into consideration.
+- **login** - As a user I want to be able to log in on the webpage so that I can get back to my account without much effort
+- **logout** - As a user I want to be able to log out from the webpage so that I can make sure no one sees my account without authorisation.
+- **profile details** - As a user I want to see a pretty, personalised account with my current data as soon as I log in. In there, I want to easily access the information needed.
+- **edit profile**- As a user I want to be able to edit my account, delete data and add new information.
+-**delete profile** As a user, I want to be able to easily delete my profile at any given time. 
 
 ## Backlog
 
-List of other features outside of the MVPs scope
-
 User profile:
-- see my profile
-- upload my profile picture
-- see other users profile
-- list of events created by the user
-- list events the user is attending
-
-Geo Location:
-- add geolocation to events when creating
-- show event in a map in event detail page
-- show all events in a map in the event list page
-
-Homepage
-- ...
+-add contact information of people I am close to 
+-automatically alert those people in case of relevant mood changes
+-greet current user with their name
 
 
 ## ROUTES:
 
 - GET / 
-  - renders the homepage
+  - renders the homepage with login/signup button
+
 - GET /auth/signup
-  - redirects to / if user logged in
+  - redirects to / if user logged in        
   - renders the signup form (with flash msg)
+  -creates User in db
+
 - POST /auth/signup
   - redirects to / if user logged in
   - body:
     - username
-    - email
-    - password
+    - email       //should email be optional?
+    - password                     
+
 - GET /auth/login
   - redirects to / if user logged in
-  - renders the login form (with flash msg)
+  - renders the login form 
+
 - POST /auth/login
   - redirects to / if user logged in
   - body:
@@ -61,22 +55,19 @@ Homepage
 - POST /auth/logout
   - body: (empty)
 
-- GET /events
-  - renders the event list + the create form
-- POST /events/create 
+- GET /profile
+  - renders personalised profile page 
+
+- POST /profile/edit
   - redirects to / if user is anonymous
   - body: 
     - name
-    - date
-    - location
-    - description
-- GET /events/:id
-  - renders the event detail page
-  - includes the list of attendees
-  - attend button if user not attending yet
-- POST /events/:id/attend 
-  - redirects to / if user is anonymous
-  - body: (empty - the user is already stored in the session)
+    -profile information
+
+
+ -POST / profile/delete
+ -renders delete button
+ -deletes profile from db   
 
 
 ## Models
@@ -86,36 +77,30 @@ User model
 ```
 username: String
 password: String
+email: String        //should email be optional?
 ```
 
-Event model
+Mood model          
 
 ```
-owner: ObjectId<User>
-name: String
-description: String
-date: Date
-location: String
-attendees: [ObjectId<User>]
+               //since you're more familar with psychology, please insert Model here ;)
 ``` 
 
 ## Links
 
 ### Trello
 
-[Link to your trello board](https://trello.com) or picture of your physical board
+https://trello.com/b/94lrfzXc/moods
 
 ### Git
 
-The url to your repository and to your deployed project
+https://github.com/CodeChita/MOODS
 
-[Repository Link](http://github.com)
-
-[Deploy Link](http://heroku.com)
+[Deploy Link]              //to be inserted
 
 ### Slides
 
 The url to your presentation slides
 
-[Slides Link](http://slides.com)
+[Slides Link](https://docs.google.com/presentation/d/1lOVf4Huj-7S_9Bs1ybYB2aUbuiQMze62Tj1BgcDE2-4/edit?usp=sharing)   //your ok with this presentation template?
 
