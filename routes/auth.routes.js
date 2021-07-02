@@ -1,6 +1,6 @@
 const router = require('express').Router();    
 const User = require('../models/User.model')
-const bcrypt = require('bcryptjs')
+//const bcrypt = require('bcryptjs')
 
 
 //GET logout
@@ -45,7 +45,7 @@ User.findOne({username})          //only if we keep username unique. else use ob
 
     res.redirect('/profile')
 
-    }  //else:  passwort reset option
+    }  //else:  passwort reset option. show reset form with confirm new password stuff
 
     else {
 
@@ -65,7 +65,7 @@ User.findOne({username})          //only if we keep username unique. else use ob
 
 
 
-            
+     /*       
 
 //GET signup
 router.get('/signup', (req,res,next)=>{
@@ -95,13 +95,13 @@ User.findOne({username})
 )
 
 })
+*/
 
 
 
 
 
-
-//create custom middleware just for authentication
+//create custom middleware for authentication
 
 
 
