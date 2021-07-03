@@ -92,6 +92,11 @@ Mood model
 
 https://trello.com/b/94lrfzXc/moods
 
+### Wireframe and workflow
+
+https://whimsical.com/moods-EiwQ1WocV1KA8Vtyb2q3Fp
+https://whimsical.com/wireframe-7cGLfdtWkjUBgAjtTXQhXC
+
 ### Git
 
 https://github.com/CodeChita/MOODS
