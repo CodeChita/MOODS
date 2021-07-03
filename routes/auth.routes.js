@@ -2,19 +2,19 @@ const router = require("express").Router();
 const User = require("../models/User.model");
 const bcrypt = require('bcryptjs')
 
-//GET logout
+//_________LOGOUT_______________________________________________
 router.get("/logout", (req, res, next) => {
   req.session.destroy();
   req.app.locals.loggedIn = false;
   res.redirect("/");
 });
 
-//GET login (which is on home screen)
+//______GET LOGIN________________________________________________________________
 router.get("/", (req, res, next) => {
   res.render("index");
 });
 
-//POST login  (also on home screen)
+//______POST LOGIN__________________________________________________________
 router.post("/", (req, res, next) => {
   //question: also email as (mandatory) signin form value?
   const { username, password } = req.body;
@@ -34,9 +34,7 @@ router.post("/", (req, res, next) => {
 
       if (comparedPassword) {
         req.session.loggedInUser = user;
-
         req.session.locals.isLoggedin = true;
-
         res.redirect("/profile");
       } //else:  passwort reset option. show reset form with confirm new password stuff
       else {
