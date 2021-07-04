@@ -89,6 +89,7 @@ return
 
 }
 
+//checks password strength
 const passRegex =  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{9,}$/;
 if(!passRegex.test(password)){
 
@@ -101,21 +102,25 @@ if(!passRegex.test(password)){
 User.findOne({username})
 .then((username)=> {
     res.render('auth/signup',{error:`Sorry, the username ${username} is already used by someone else. Please choose another one.`})
-}
+})
 
+.catch((username, email, password)=> {
+const salt = bcrypt.genSaltSync(12) 
+const securePW = bcrypt.hashSync(password, salt)
 
+User.create({username, email, password: securePW})
+.then(()=> {
 
+res.redirect('/')
+res.render('Thanks for registering. You can now log in.')
 
+})
+.catch((err)=> {
 
+ next(err)
 
-
-
-
-
-//hash passwort. with salt & regex
-//grab data & create new User with that data in db
-
-)
+})
+})
 
 })
 
