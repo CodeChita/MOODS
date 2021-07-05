@@ -73,37 +73,69 @@ router.post('/signup', (req, res, next) =>{
 // })
 
 
-/*       
+  
 
-//GET signup
+//_____GET signup_____________________________________________
 router.get('/signup', (req,res,next)=>{
     res.render('auth/signup')
 })
 
-//POST signup
+//_______POST signup___________________________________________
 router.post('/signup', (req, res, next)=> {
 //grab username & password from form
-const {username, password} = req.body;
+const {username, password, email} = req.body;    
 
 //check if username & password both entered
-if(!username || !password){
+if(!username || !password ||!email){       
 
-    res.render('Please enter a username and password')
+    res.render('auth/signup', {error: 'Please enter a username and password'})
+    return
 }
+
+//check if valid email____ONLY IF WE USE EMAIL IN OUR FORM
+const mailRegex= /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+if(!mailRegex.test(email)){
+
+res.render('auth/signup', {error: 'Your email needs to be of a valid format, e.g. hello@mail.com'})
+return
+
+}
+
+//checks password strength
+const passRegex =  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{9,}$/;
+if(!passRegex.test(password)){
+
+  res.render('auth/signup', {error: 'For security reasons, your password has to include 1. more than 9 characters 2. at least one number 3. at least one special character.'})
+  return
+}
+
+
 //check if username is unique
 User.findOne({username})
 .then((username)=> {
-    res.render(`Sorry, the username ${username} is already used by someone else.`)
-}
+    res.render('auth/signup',{error:`Sorry, the username ${username} is already used by someone else. Please choose another one.`})
+})
 
+.catch((username, email, password)=> {
+const salt = bcrypt.genSaltSync(12) 
+const securePW = bcrypt.hashSync(password, salt)
 
-//hash passwort. with salt & regex
-//grab data & create new User with that data in db
+User.create({username, email, password: securePW})
+.then(()=> {
 
-)
+res.redirect('/')
+res.render('Thanks for registering. You can now log in.')
 
 })
-*/
+.catch((err)=> {
+
+ next(err)
+
+})
+})
+
+})
+
 
 //create custom middleware for authentication
 // function checkAuthStat(req, res, next){
