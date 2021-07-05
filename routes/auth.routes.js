@@ -11,9 +11,12 @@ const nodemailer = require('nodemailer')
 // });
 
 //POST login  (also on home screen)
-router.post('/', (req, res, next) =>{
+router.post('/', (req, res, next) => {
   const {username, password} = req.body
-  !username || !password ? res.render('index.hbs', {error: "Please enter your username and password to continue"}) : null
+  if(!username || !password){
+    res.render('index.hbs', {error: "Please enter your username and password to continue"})
+    return
+  }
   
   UserModel.findOne({username})
     .then((user) => {
@@ -47,17 +50,15 @@ router.post('/signup', (req, res, next) => {
   const passRegex =  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{9,}$/;
   const salt = bcrypt.genSaltSync(12) 
   const securePW = bcrypt.hashSync(password, salt)
-  //check if username & password &mail both entered 
-  if(!username || !password ||!email){
+  //check if username & password both entered //made a ternaryoperator 
+  if(!username || !password){
     res.render('auth/signup.hbs', {error: 'please fill in all fields'})
     return
   }
-  //check if valid email____ONLY IF WE USE EMAIL IN OUR FORM //made a ternaryoperator 
   if(!mailRegex.test(email)){
     res.render('auth/signup', {error: 'Your email needs to be of a valid format, e.g. hello@moods.com'})
     return
   }
-  // //checks password strength //made a ternaryoperator 
   if(!passRegex.test(password)){
     res.render('auth/signup', {error: 'For security reasons, your password has to include 1. more than 9 characters 2. at least one number 3. at least one special character.'})
     return
@@ -66,7 +67,7 @@ router.post('/signup', (req, res, next) => {
   //check if username is unique
   UserModel.findOne({username})
     .then((username) => {
-        res.render('auth/signup',{error:`Sorry, the username ${username.username} is already used by someone else. Please choose another one.`})
+      res.render('auth/signup',{error:`Sorry, the username ${username.username} is already used by someone else. Please choose another one.`})
     })
     .catch((username, email, password) => {
       next()
@@ -84,7 +85,7 @@ router.post('/signup', (req, res, next) => {
 
 // create custom middleware for authentication
  checkAuthStat = (req, res, next) => 
-req.session.loggedInUser ? next() :res.redirect('/') //made a ternaryoperator 
+req.session.loggedInUser ? next() : res.redirect('/') //made a ternaryoperator 
 
 
 router.get('/profile', checkAuthStat, (req, res, next) => {
