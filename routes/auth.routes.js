@@ -10,9 +10,12 @@ const bcrypt = require('bcryptjs')
 // });
 
 //POST login  (also on home screen)
-router.post('/', (req, res, next) =>{
+router.post('/', (req, res, next) => {
   const {username, password} = req.body
-  !username || !password ? res.render('index.hbs', {error: "Please enter your username and password to continue"}) : null
+  if(!username || !password){
+    res.render('index.hbs', {error: "Please enter your username and password to continue"})
+    return
+  }
   
   UserModel.findOne({username})
     .then((user) => {
@@ -47,22 +50,29 @@ router.post('/signup', (req, res, next) => {
   const salt = bcrypt.genSaltSync(12) 
   const securePW = bcrypt.hashSync(password, salt)
   //check if username & password both entered //made a ternaryoperator 
-  !username || !password ? res.render('auth/signup.hbs', {error: 'please fill in all fields'}) : null
-  //check if valid email____ONLY IF WE USE EMAIL IN OUR FORM //made a ternaryoperator 
-  !mailRegex.test(email) ? res.render('auth/signup', {error: 'Your email needs to be of a valid format, e.g. hello@moods.com'}) : null
-  // //checks password strength //made a ternaryoperator 
-  !passRegex.test(password) ? res.render('auth/signup', {error: 'For security reasons, your password has to include 1. more than 9 characters 2. at least one number 3. at least one special character.'}) : null
+  if(!username || !password){
+    res.render('auth/signup.hbs', {error: 'please fill in all fields'})
+    return
+  }
+  if(!mailRegex.test(email)){
+    res.render('auth/signup', {error: 'Your email needs to be of a valid format, e.g. hello@moods.com'})
+    return
+  }
+  if(!passRegex.test(password)){
+    res.render('auth/signup', {error: 'For security reasons, your password has to include 1. more than 9 characters 2. at least one number 3. at least one special character.'})
+    return
+  }
 
   //check if username is unique
-  User.findOne({username})
+  UserModel.findOne({username})
     .then((username) => {
-        res.render('auth/signup',{error:`Sorry, the username ${username.username} is already used by someone else. Please choose another one.`})
+      res.render('auth/signup',{error:`Sorry, the username ${username.username} is already used by someone else. Please choose another one.`})
     })
     .catch((username, email, password) => {
       next()
     })
 
-  User.create({username, email, password: securePW})
+  UserModel.create({username, email, password: securePW})
     .then(() => {
       res.redirect('/')
     })
@@ -73,7 +83,7 @@ router.post('/signup', (req, res, next) => {
 
 // create custom middleware for authentication
  checkAuthStat = (req, res, next) => 
-req.session.loggedInUser ? next() :res.redirect('/') //made a ternaryoperator 
+req.session.loggedInUser ? next() : res.redirect('/') //made a ternaryoperator 
 
 
 router.get('/profile', checkAuthStat, (req, res, next) => {
