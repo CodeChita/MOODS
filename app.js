@@ -42,7 +42,7 @@ app.use(session({
 
 // 👇 Start handling routes here
 const index = require("./routes/index");     //same as signin
-const moods = require('/routes/moods.routes')
+//const moods = require('/routes/moods.routes')
 const authRoutes = require('./routes/auth.routes')
 
 app.use("/", index);

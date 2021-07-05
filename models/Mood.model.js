@@ -2,7 +2,7 @@ const {Schema, model} = require('mongoose');
 
 
 
-const MoodSchmea = new mongoose.Schema({     //do we need to put 'mongoose' here?
+const MoodSchmea = new mongoose.Schema({     
 
 
 
@@ -12,7 +12,7 @@ const MoodSchmea = new mongoose.Schema({     //do we need to put 'mongoose' here
 
 
 
-const MoodModel = mongoose.model('Mood', MoodSchema)    //same question
+const MoodModel = mongoose.model('Mood', MoodSchema)  
 
 
 

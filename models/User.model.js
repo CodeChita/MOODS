@@ -6,7 +6,7 @@ const userSchema = new Schema({
     type: String,
     unique: true  //ideally, should be unique, but its up to you
   },
-  status: {    //only for email confirmation process 
+ /* status: {    //only for email confirmation process 
 
     type: String,
     enum: ['active', 'pending confirmation'],
@@ -16,11 +16,21 @@ const userSchema = new Schema({
   confirmationCode:{                //only for email confirmation process 
 type: String,
 unique: true
-  },
+  }, */
 
-  password: String,
-  
-  email: String
+  password: {
+    type: String,
+    required: true
+    
+  },  
+  email: {
+    type: String,
+    required: true
+   
+  }
+
 });
+
+
 const User = model("User", userSchema);
 module.exports = User;
