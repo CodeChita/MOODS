@@ -1,19 +1,14 @@
 <h1>Become part of the community.</h1>
 
-<form action="/" method="POST">
-
-<label for="username">Choose a username:</label>
-<input type="text" name="username"  id="username" placeholder="How do you want us to call you?"><br><br>
-
-<label for="email">Enter your email:</label>
-<input type="email" name="mail" id="mail" placeholder="Please enter your email">
-
-<label for="password">Choose a password:</label>
-<input type="password" name="password"  id="password" placeholder="Please choose your password"><br><br>
-
-<label for="confirmPassword">Confirm password:</label>
-<input type="password" name="confirmPassword" id = "confirmPassword" placeholder="Please confirm your password"><br><br>
-
-<button type="submit">Sign up</button><br>
-
+<form action="/signup" method="POST">
+    <label for="username">Choose a username:</label>
+    <input type="text" name="username" placeholder="How do you want us to call you?"><br><br>
+    <label for="password">Choose a password:</label>
+    <input type="password" name="password" placeholder="Please choose your password"><br><br>
+    <label for="email">What is your email:</label>
+    <input type="email" name="email" placeholder="hello@moods.com"><br><br>
+    <button type="submit">Sign up</button><br>
 </form>
+{{#if error}}
+    <p> {{error}} </p>
+{{/if}}

@@ -1,170 +1,83 @@
 const router = require("express").Router();
-const User = require("../models/User.model");
+const UserModel = require("../models/User.model");
 const bcrypt = require('bcryptjs')
 const nodemailer = require('nodemailer')
 
-//_________LOGOUT_______________________________________________
-router.get("/logout", (req, res, next) => {
-  req.session.destroy();
-  req.app.locals.loggedIn = false;
-  res.redirect("/");
-  res.render('You are now logged out.')
-});
+//GET logout
+// router.get("/logout", (req, res, next) => {
+//   req.session.destroy();
+//   req.app.locals.loggedIn = false;
+//   res.redirect("/");
+// });
 
-//______GET LOGIN________________________________________________________________
-router.get("/", (req, res, next) => {
-  res.render("index");
-});
-
-//______POST LOGIN__________________________________________________________
-router.post("/", (req, res, next) => {
- 
-  const { username, password } = req.body;
-
-  //check if username && password both entered   //else flash error message
-  if (!username || !password) {
-    res.render("Please enter your username and password to continue");
-    return; //why do we need to do that again?
-  }
-
-  User.findOne({ username }) //only if we keep username unique. else use object id
-
+//POST login  (also on home screen)
+router.post('/', (req, res, next) =>{
+  const {username, password} = req.body
+  !username || !password ? res.render('index.hbs', {error: "Please enter your username and password to continue"}) : null
+  
+  UserModel.findOne({username})
     .then((user) => {
-      //hier YANIS FRAGEN OB ZWISCHENSCHRITT
-      //check password
-      let comparedPassword = bcrypt.compareSync(password, user.password);
-
-      if (comparedPassword) {
-        req.session.loggedInUser = user;
-        req.session.locals.isLoggedin = true;
-        res.redirect("/profile");
-      } //else:  passwort reset option. show reset form with confirm new password stuff
-      else {
-        res.render("index", {
-          error:
-            "Sorry, this passwort does not exist. You can easily reset it here.",
-        });                                    //on "here"->link to reset-password-view?
+      if(user){
+        const comparedPassword = bcrypt.compareSync(password, user.password);
+        if(comparedPassword){
+          req.session.loggedInUser = user;
+          req.app.locals.isLoggedin = true;
+          res.redirect("/profile");
+        }
       }
+      else
+        res.render("index", {error: 'wrong password or username'})
     })
-    .catch(() => {
-      res.render("index", {
-        error: "We are sorry. This username does not exist",
-      }); //if username forgotten --> we need email to reset..?
-    });
-});
-
-
-
-router.get('/profile', (req,res,next)=>{
-
-    res.render('auth/profile')
-
+    .catch((err) => {
+      console.log('check')
+      next(err)
+    })
 })
 
-
-  
-
-//_____GET signup_____________________________________________
-router.get('/signup', (req,res,next)=>{
+//_____________GET signup_____________
+router.get('/signup', (req,res,next) => {
     res.render('auth/signup')
 })
 
-//_______POST signup___________________________________________
-router.post('/signup', (req, res, next)=> {
+//_____________POST signup____________
+router.post('/signup', (req, res, next) => {
 //grab username & password from form
-const {username, password, email} = req.body;    
+  const {username, password, email} = req.body; 
+  const mailRegex= /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;   
+  const passRegex =  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{9,}$/;
+  const salt = bcrypt.genSaltSync(12) 
+  const securePW = bcrypt.hashSync(password, salt)
+  //check if username & password both entered //made a ternaryoperator 
+  !username || !password ? res.render('auth/signup.hbs', {error: 'please fill in all fields'}) : null
+  //check if valid email____ONLY IF WE USE EMAIL IN OUR FORM //made a ternaryoperator 
+  !mailRegex.test(email) ? res.render('auth/signup', {error: 'Your email needs to be of a valid format, e.g. hello@moods.com'}) : null
+  // //checks password strength //made a ternaryoperator 
+  !passRegex.test(password) ? res.render('auth/signup', {error: 'For security reasons, your password has to include 1. more than 9 characters 2. at least one number 3. at least one special character.'}) : null
 
+  //check if username is unique
+  User.findOne({username})
+    .then((username) => {
+        res.render('auth/signup',{error:`Sorry, the username ${username.username} is already used by someone else. Please choose another one.`})
+    })
+    .catch((username, email, password) => {
+      next()
+    })
 
-//check if username, email, password all entered
-if(!username || !password ||!email){       
-
-    res.render('auth/signup', {error: 'Please enter a username, email and password'})
-    return
-}
-
-//check if valid email format
-const mailRegex= /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-if(!mailRegex.test(email)){
-
-res.render('auth/signup', {error: 'Your email needs to be of a valid format, e.g. hello@mail.com'})
-return
-
-}
-
-//check password strength (see conditions in rendered message)
-const passRegex =  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{9,}$/;
-if(!passRegex.test(password)){
-
-  res.render('auth/signup', {error: 'For security reasons, your password has to include 1. more than 9 characters 2. at least one number 3. at least one special character.'})
-  return
-}
-
-
-//check if username is unique
-User.findOne({username})
-.then((username)=> {
-    res.render('auth/signup',{error:`Sorry, the username ${username} is already used by someone else. Please choose another one.`})
+  User.create({username, email, password: securePW})
+    .then(() => {
+      res.redirect('/')
+    })
+    .catch((err) => {
+      next(err)
+    })
 })
 
-//encrypt password
-.catch((username, email, password)=> {
-const salt = bcrypt.genSaltSync(12) 
-const securePW = bcrypt.hashSync(password, salt)
+// create custom middleware for authentication
+ checkAuthStat = (req, res, next) => 
+req.session.loggedInUser ? next() :res.redirect('/') //made a ternaryoperator 
 
 
-//create confirmation code
-const randomString = 'pagfbe9154l<?fjkqvxcüwej4b.ö12ß`´#^|-:;.xlawqiqlWKDSGTQRÖCÜÄCMAD0&$§"+/'
-let confirmationCode = ''
-for(let i =0; i <=20; i++){
-
-  confirmationCode += randomString[Math.floor(Math.random()*randomString.length)]
-}
-
-//create user in our database. redirect to home screen
-User.create({username, email, password: securePW, confirmationCode})
-.then(()=> {
-
-res.redirect('/')
-res.render('Thanks for registering. We sent you an email to confirm your registration.')
-
-
-//create confirmation email to user with nodemail
-let transporter = nodemailer.createTransport({
-  service: 'Gmail',
-  auth: {
-    user: 'your email address',
-    pass: 'your email password' 
-  }
-});
-
-
-
-
-
-})
-.catch((err)=> {
-
- next(err)
-
-})
-})
-
-})
-
-
-//_____custom middleware for authentication_______
-function checkAuthStat(req, res, next){
-if(req.session.loggedInUser){
-    next()
-} else {
-    res.redirect('/')
-}
-
-}
-
-
-router.get('/profile', checkAuthStat, (req, res, next)=>{
-
+router.get('/profile', checkAuthStat, (req, res, next) => {
     res.render('auth/profile', {name: req.session.loggedInUser.username})
 })
 

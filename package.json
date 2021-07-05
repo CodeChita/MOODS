@@ -1,5 +1,5 @@
 {
-  "name": "MOODS",
+  "name": "moods",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -8,9 +8,11 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "connect-mongo": "^4.4.1",
     "cookie-parser": "^1.4.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "express-session": "^1.17.2",
     "hbs": "^4.1.2",
     "iron-generator": "^4.14.4",
     "mongoose": "^5.13.0",
