@@ -42,11 +42,12 @@ app.use(session({
 
 // 👇 Start handling routes here
 const index = require("./routes/index");     //same as signin
-app.use("/", index);
-
+const moods = require('/routes/moods.routes')
 const authRoutes = require('./routes/auth.routes')
-  app.use("/", authRoutes);
 
+app.use("/", index);
+app.use("/", authRoutes);
+// app.use("/", moods);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
