@@ -6,6 +6,18 @@ const userSchema = new Schema({
     type: String,
     unique: true  //ideally, should be unique, but its up to you
   },
+  status: {    //only for email confirmation process 
+
+    type: String,
+    enum: ['active', 'pending confirmation'],
+    default: 'pending confirmation'
+  },
+
+  confirmationCode:{                //only for email confirmation process 
+type: String,
+unique: true
+  },
+
   password: String,
   
   email: String

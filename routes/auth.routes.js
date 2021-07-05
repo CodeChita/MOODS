@@ -17,7 +17,7 @@ router.get("/", (req, res, next) => {
 
 //______POST LOGIN__________________________________________________________
 router.post("/", (req, res, next) => {
-  //question: also email as (mandatory) signin form value?
+ 
   const { username, password } = req.body;
 
   //check if username && password both entered   //else. flash error message
@@ -73,14 +73,14 @@ router.post('/signup', (req, res, next)=> {
 //grab username & password from form
 const {username, password, email} = req.body;    
 
-//check if username & password both entered
+//check if username, email, password all entered
 if(!username || !password ||!email){       
 
-    res.render('auth/signup', {error: 'Please enter a username and password'})
+    res.render('auth/signup', {error: 'Please enter a username, email and password'})
     return
 }
 
-//check if valid email____ONLY IF WE USE EMAIL IN OUR FORM
+//check if valid email format
 const mailRegex= /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 if(!mailRegex.test(email)){
 
@@ -89,7 +89,7 @@ return
 
 }
 
-//checks password strength
+//check password strength (see conditions in rendered message)
 const passRegex =  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{9,}$/;
 if(!passRegex.test(password)){
 
@@ -104,11 +104,22 @@ User.findOne({username})
     res.render('auth/signup',{error:`Sorry, the username ${username} is already used by someone else. Please choose another one.`})
 })
 
+//encrypt password
 .catch((username, email, password)=> {
 const salt = bcrypt.genSaltSync(12) 
 const securePW = bcrypt.hashSync(password, salt)
 
-User.create({username, email, password: securePW})
+
+//create confirmation code
+const randomString = 'pagfbe9154l<?fjkqvxcüwej4b.ö12ß`´#^|-:;.xlawqiqlWKDSGTQRÖCÜÄCMAD0&$§"+/'
+let code = ''
+for(let i =0; i <=20; i++){
+
+code += randomString[Math.floor(Math.random()*randomString.length)]
+}
+
+//create user in our database. redirect to home screen
+User.create({username, email, password: securePW, confirmationCode})
 .then(()=> {
 
 res.redirect('/')
