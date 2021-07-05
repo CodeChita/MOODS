@@ -3,7 +3,7 @@
 
 ## Description
 
-MOODS is an app that enables users to track their moods on a regular basis. The aim is to help users, especially those with relevant disorders, to feel more in control and aware of factors that influence their emotions.
+MOODS is an app that enables users to track their moods on a regular basis. The aim is to help people, especially those with relevant disorders, to feel more in control and aware of factors that influence their emotions.
 
  
 ## User Stories
