@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const User = require("../models/User.model");
 const bcrypt = require('bcryptjs')
+const nodemailer = require('nodemailer')
 
 //_________LOGOUT_______________________________________________
 router.get("/logout", (req, res, next) => {
@@ -20,7 +21,7 @@ router.post("/", (req, res, next) => {
  
   const { username, password } = req.body;
 
-  //check if username && password both entered   //else. flash error message
+  //check if username && password both entered   //else flash error message
   if (!username || !password) {
     res.render("Please enter your username and password to continue");
     return; //why do we need to do that again?
@@ -30,7 +31,7 @@ router.post("/", (req, res, next) => {
 
     .then((user) => {
       //hier YANIS FRAGEN OB ZWISCHENSCHRITT
-
+      //check password
       let comparedPassword = bcrypt.compareSync(password, user.password);
 
       if (comparedPassword) {
@@ -73,6 +74,7 @@ router.post('/signup', (req, res, next)=> {
 //grab username & password from form
 const {username, password, email} = req.body;    
 
+
 //check if username, email, password all entered
 if(!username || !password ||!email){       
 
@@ -112,10 +114,10 @@ const securePW = bcrypt.hashSync(password, salt)
 
 //create confirmation code
 const randomString = 'pagfbe9154l<?fjkqvxcüwej4b.ö12ß`´#^|-:;.xlawqiqlWKDSGTQRÖCÜÄCMAD0&$§"+/'
-let code = ''
+let confirmationCode = ''
 for(let i =0; i <=20; i++){
 
-code += randomString[Math.floor(Math.random()*randomString.length)]
+  confirmationCode += randomString[Math.floor(Math.random()*randomString.length)]
 }
 
 //create user in our database. redirect to home screen
@@ -123,7 +125,21 @@ User.create({username, email, password: securePW, confirmationCode})
 .then(()=> {
 
 res.redirect('/')
-res.render('Thanks for registering. You can now log in.')
+res.render('Thanks for registering. We sent you an email to confirm your registration.')
+
+
+//create confirmation email to user with nodemail
+let transporter = nodemailer.createTransport({
+  service: 'Gmail',
+  auth: {
+    user: 'your email address',
+    pass: 'your email password' 
+  }
+});
+
+
+
+
 
 })
 .catch((err)=> {
