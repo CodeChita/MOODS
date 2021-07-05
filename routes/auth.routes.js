@@ -92,15 +92,5 @@ router.get('/profile', checkAuthStat, (req, res, next) => {
     res.render('auth/profile', {name: req.session.loggedInUser.username})
 })
 
-//ROUTE TO SHOW CHART
-   /* router.get("/statistics", (req, res, next) => {
-        let chartData = [12, 19, 3, 5, 2, 3]
-        let chartLabels = ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange']
-        
-        res.render("auth/statistics.hbs", {
-          chartData: JSON.stringify(chartData),
-          chartLabels: JSON.stringify(chartLabels)
-        });
-      }); */
 
 module.exports = router;
