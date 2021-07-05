@@ -24,6 +24,22 @@ const capitalized = (string) => string[0].toUpperCase() + string.slice(1).toLowe
 
 app.locals.title = `${capitalized(projectName)}`;
 
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
+
+app.use(session({
+  secret: process.env.SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+      maxAge: 1000 * 24 * 60 * 60 
+  },
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGODB_URI || "mongodb://localhost/basic-auth",
+    ttl: 24* 60 * 60
+    })
+}));
+
 // 👇 Start handling routes here
 const index = require("./routes/index");     //same as signin
 app.use("/", index);
