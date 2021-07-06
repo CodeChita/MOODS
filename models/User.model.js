@@ -11,5 +11,7 @@ const userSchema = new Schema({
   email: String,
 
 });
+
+
 const User = model("User", userSchema);
 module.exports = User;

@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const UserModel = require("../models/User.model");
+const MoodModel = require("../models/Mood.model")
 const bcrypt = require('bcryptjs')
+const nodemailer = require('nodemailer')
 
 //GET logout
 // router.get("/logout", (req, res, next) => {
@@ -16,7 +18,7 @@ router.post('/', (req, res, next) => {
     res.render('index.hbs', {error: "Please enter your username and password to continue"})
     return
   }
-  
+
   UserModel.findOne({username})
     .then((user) => {
       if(user){
@@ -43,7 +45,7 @@ router.get('/signup', (req,res,next) => {
 
 //_____________POST signup____________
 router.post('/signup', (req, res, next) => {
-//grab username & password from form
+//grab username & password & mail from form
   const {username, password, email} = req.body; 
   const mailRegex= /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;   
   const passRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{9,}$/;
@@ -59,14 +61,14 @@ router.post('/signup', (req, res, next) => {
     return
   }
   if(!passRegex.test(password)){
-    res.render('auth/signup', {error: 'For security reasons, your password has to include 1. more than 9 characters 2. at least one number 3. at least one special character.'})
+    res.render('auth/signup', {error: 'For security reasons, your password has to include at least 9 characters, at least one number, at least one special character.'})
     return
   }
 
   //check if username is unique
   UserModel.findOne({username})
     .then((username) => {
-      res.render('auth/signup',{error:`Sorry, the username ${username.username} is already used by someone else. Please choose another one.`})
+      res.render('auth/signup',{error:`Sorry, the username ${user.username} is already used by someone else. Please choose another one.`})
     })
     .catch((username, email, password) => {
       next()
@@ -74,6 +76,7 @@ router.post('/signup', (req, res, next) => {
 
   UserModel.create({username, email, password: securePW})
     .then(() => {
+      console.log('im here')
       res.redirect('/')
     })
     .catch((err) => {
@@ -83,8 +86,7 @@ router.post('/signup', (req, res, next) => {
 
 // create custom middleware for authentication
  checkAuthStat = (req, res, next) => 
-req.session.loggedInUser ? next() : res.redirect('/') //made a ternaryoperator 
-
+req.session.loggedInUser ? next() : res.redirect('/') 
 
 router.get('/profile', checkAuthStat, (req, res, next) => {
     res.render('auth/profile', {name: req.session.loggedInUser.username})

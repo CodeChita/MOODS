@@ -24,6 +24,7 @@ User profile:
 -add contact information of people I am close to 
 -automatically alert those people in case of relevant mood changes
 -greet current user with their name
+-add profile picture
 
 
 ## ROUTES:
