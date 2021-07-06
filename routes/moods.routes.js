@@ -14,6 +14,7 @@ router.post('/createmood', (req, res, next) =>{
         MoodModel.find({userId: user._id})
         .then((moods) => {
             console.log(moods)
+            res.redirect('/profile')
         })
     })
     .catch((err) => {

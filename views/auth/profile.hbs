@@ -1,3 +1,10 @@
 <h1>Welcome, {{name}}</h1>
-
-<a href="/createmood">Create a new mood</a>
+{{#if mainUser===true}}
+<p>checking</p>
+{{/if}}
+{{#if mainUser}}
+    <a href="/createmood">Create a new mood</a> <br>
+    <a href="/add-loved-one">Add a loved one</a> <br>
+    {{else}}
+{{/if}}
+<a href="/statistics">Look at the data</a> <br>
