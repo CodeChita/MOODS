@@ -12,12 +12,15 @@ router.post('/createmood', (req, res, next) =>{
     MoodModel.create({mood, sleep, stress, userId: user._id})
     .then(() => {
         MoodModel.find({userId: user._id})
-        .then((moods) => {
-            console.log(moods)
+        .then(() => {
+            res.redirect('/profile')
         })
     })
     .catch((err) => {
         console.log(err)
     })
 })
+
+
+
 module.exports = router;

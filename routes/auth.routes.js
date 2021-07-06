@@ -46,7 +46,7 @@ router.post('/signup', (req, res, next) => {
 //grab username & password from form
   const {username, password, email} = req.body; 
   const mailRegex= /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;   
-  const passRegex =  /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{9,}$/;
+  const passRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{9,}$/;
   const salt = bcrypt.genSaltSync(12) 
   const securePW = bcrypt.hashSync(password, salt)
   //check if username & password both entered //made a ternaryoperator 
@@ -89,5 +89,7 @@ req.session.loggedInUser ? next() : res.redirect('/') //made a ternaryoperator
 router.get('/profile', checkAuthStat, (req, res, next) => {
     res.render('auth/profile', {name: req.session.loggedInUser.username})
 })
+
+//------------ adding loved ones account ------------
 
 module.exports = router;

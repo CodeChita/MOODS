@@ -17,14 +17,4 @@ const MoodSchema = new Schema({     //do we need to put 'mongoose' here?
     }
 })
 const MoodModel = model('Mood', MoodSchema)    //same question
-
-
-
-
-
-
-
-
-
-
 module.exports = MoodModel;
