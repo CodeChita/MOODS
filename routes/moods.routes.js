@@ -36,17 +36,16 @@ router.post('/createmood', (req, res, next) =>{
         MoodModel.find({userId: user._id})
             .then((moodArr)=> {
                 moodArr.forEach((mood) => {
+                    let creationDate = new Date(mood.createdAt).toDateString()
+                    let creationTime = new Date(mood.createdAt).toLocaleTimeString()
+                    let ourTimestamp = creationDate.concat(' TIME: ', creationTime)
+
+
                     moodData.push(Number(mood.mood))
                     stressData.push(Number(mood.stress))
                     sleepData.push(Number(mood.sleep))
-                  //  chartLabels.push(new Date(mood.createdAt).toDateString().concat(" ", new Date(mood.createdAt).(toLocaleTimeString())))
-                    
-                 let creationDate = new Date(mood.createdAt).toDateString()
-                 let creationTime = new Date(mood.createdAt).toLocaleTimeString()
-                 let ourTimestamp = creationDate.concat(' TIME: ', creationTime)
-                  
-                   chartLabels.push(ourTimestamp)
-                   console.log(chartLabels)
+                    chartLabels.push(ourTimestamp)
+                   
 
                 })
                 
