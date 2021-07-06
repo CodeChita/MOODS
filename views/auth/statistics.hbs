@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script  src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.1/chart.min.js"  integrity="sha512-BqNYFBAzGfZDnIWSAEGZSD/QFKeVxms2dIBPfw11gZubWwKUjEgmFUtUls8vZ6xTRZN/jaXGHD/ZaxD9+fDo0A=="  crossorigin="anonymous"></script>
+</head>
+<body>
+    <h2>Check out your moods:</h2>
+
+    <canvas  id="moodChart"  width="400"  height="400"></canvas>
+<script>
+    const ctx = document.getElementById('moodChart').getContext('2d');
+
+    const moodChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{{chartLabels}}},
+
+            datasets: [{
+                label: 'my general mood',
+                data: {{{moodData}}},
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 1
+            },
+            {
+                label: 'my stress level',
+                data: {{{stressData}}},
+                fill: false,
+                borderColor: 'rgb(153, 0, 0)',
+                tension: 1
+            },
+            {
+                label: 'my sleep level',
+                data: {{{sleepData}}},
+                fill: false,
+                borderColor: 'rgb(51, 102 ,0)',
+                tension: 1    
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    min: 0
+                
+                }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

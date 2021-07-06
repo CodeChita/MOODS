@@ -1,7 +1,7 @@
 const {Schema, model} = require('mongoose');
 const mongoose = require('mongoose')
 require('./User.model')
-const MoodSchema = new Schema({     //do we need to put 'mongoose' here?
+const MoodSchema = new Schema({   
     mood: {
         type: String, 
     },
@@ -15,8 +15,12 @@ const MoodSchema = new Schema({     //do we need to put 'mongoose' here?
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }
-})
-const MoodModel = model('Mood', MoodSchema)    //same question
+},
+    {
+    timestamps: true
+}, 
+)
+const MoodModel = model('Mood', MoodSchema)  
 
 
 
