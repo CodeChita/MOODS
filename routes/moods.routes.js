@@ -9,7 +9,7 @@ router.get('/createmood', (req, res, next) => {
 router.post('/createmood', (req, res, next) =>{
     const {mood, sleep, stress} = req.body
     const user = req.session.loggedInUser
-    MoodModel.create({mood, sleep, stress, userId: user._id})
+    MoodModel.create({mood, sleep, stress, userId: user._id})  
     .then(() => {
         MoodModel.find({userId: user._id})
         .then((moods) => {
@@ -28,23 +28,33 @@ router.post('/createmood', (req, res, next) =>{
         let moodData = []
         let stressData = []
         let sleepData = []
-        let chartLabels = ['Mood 1', 'Mood 2', 'Mood 3', 'Mood 4', 'Mood 5', 'Mood 6']
+        let chartLabels = []
+     
+       
         
-        MoodModel.find({userId: user._id})//.sort({createdAt: -1})
+        
+        MoodModel.find({userId: user._id})
             .then((moodArr)=> {
                 moodArr.forEach((mood) => {
                     moodData.push(Number(mood.mood))
                     stressData.push(Number(mood.stress))
                     sleepData.push(Number(mood.sleep))
-
+                  //  chartLabels.push(new Date(mood.createdAt).toDateString().concat(" ", new Date(mood.createdAt).(toLocaleTimeString())))
+                    
+                 let creationDate = new Date(mood.createdAt).toDateString()
+                 let creationTime = new Date(mood.createdAt).toLocaleTimeString()
+                 let ourTimestamp = creationDate.concat(' TIME: ', creationTime)
+                  
+                   chartLabels.push(ourTimestamp)
+                   console.log(chartLabels)
 
                 })
                 
-              res.render("auth/statistics.hbs",  {
+              res.render("auth/statistics.hbs",  {   
                   
                     moodData: JSON.stringify(moodData),
-                    //stressData: JSON.stringify(stressData),
-                    //sleepData: JSON.stringify(sleepData),
+                    stressData: JSON.stringify(stressData),
+                    sleepData: JSON.stringify(sleepData),
                     chartLabels: JSON.stringify(chartLabels)
                 });
             })   

@@ -14,10 +14,12 @@ const MoodSchema = new Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
-    }},
+    }
+},
     {
     timestamps: true
-})
+}, 
+)
 const MoodModel = model('Mood', MoodSchema)  
 
 
