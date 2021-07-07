@@ -24,12 +24,13 @@ User profile:
 -add contact information of people I am close to 
 -automatically alert those people in case of relevant mood changes
 -greet current user with their name
--add profile picture
+-add profile picture (ask Ana sun & salvador)
 -question form (drugs, menstruation, nutrition, weather...) in mood-create
 -personal notes on comfort activities
 -confirmation email (2 factor authentication)
 -third party login
 -flash error messages 
+-dynamic color update (Conchita)
 
 ## ROUTES:
 
@@ -82,13 +83,13 @@ User model
 ```
 username: String
 password: String
-email: String        //should email be optional?
+email: String       
 ```
 
 Mood model          
 
 ```
-               //since you're more familar with psychology, please insert Model here ;)
+               
 ``` 
 
 ## Links
