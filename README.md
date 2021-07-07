@@ -25,7 +25,11 @@ User profile:
 -automatically alert those people in case of relevant mood changes
 -greet current user with their name
 -add profile picture
-
+-question form (drugs, menstruation, nutrition, weather...) in mood-create
+-personal notes on comfort activities
+-confirmation email (2 factor authentication)
+-third party login
+-flash error messages 
 
 ## ROUTES:
 
