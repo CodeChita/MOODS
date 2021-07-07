@@ -4,7 +4,7 @@ const MoodModel = require("../models/Mood.model")
 const bcrypt = require('bcryptjs')
 const nodemailer = require('nodemailer')
 const randomstring = require('randomstring');
-const User = require("../models/User.model");
+
 
 //GET logout
 // router.get("/logout", (req, res, next) => {
@@ -85,9 +85,30 @@ router.post('/signup', (req, res, next) => {
     //User.status = 'Pending confirmation'
 
 
+
+
+//route to send confirmation mail when signup posted
+router.post()
+    let transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: 'sinah.scholz1@gmail.com',
+        pass: 'somePW' //store in env?
+      }
+    });
+
+    transporter.sendMail({
+      from: '"MOODS" <sinah.scholz1@gmail.com>',
+      to: 'receiver@myawesomereceiver.com', 
+      subject: 'Please confirm your account', 
+      text: 'Awesome Message',
+      html: '<b>Awesome Message</b>'
+    })
+    .then(info => console.log(info))
+    .catch(error => console.log(error))
     
 
-    //req.flash flashes error messages: req.flash('error', 'Username ${username} already used')
+    //req.flash flashes error messages: req.flash('error', 'Username ${username} already used'). store status as well?
   UserModel.create({username, email, password: securePW, confirmationCode, status: 'Pending confirmation'})
     .then(() => {
       console.log('im here')
