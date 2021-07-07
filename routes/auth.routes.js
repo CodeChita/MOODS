@@ -3,6 +3,8 @@ const UserModel = require("../models/User.model");
 const MoodModel = require("../models/Mood.model")
 const bcrypt = require('bcryptjs')
 const nodemailer = require('nodemailer')
+const randomstring = require('randomstring');
+const User = require("../models/User.model");
 
 //GET logout
 // router.get("/logout", (req, res, next) => {
@@ -65,6 +67,7 @@ router.post('/signup', (req, res, next) => {
     return
   }
 
+
   //check if username is unique
   UserModel.findOne({username})
     .then((username) => {
@@ -74,7 +77,18 @@ router.post('/signup', (req, res, next) => {
       next()
     })
 
-  UserModel.create({username, email, password: securePW})
+
+   // generate a randomTSring/secret token for confirmation mail with nodemailer
+    const confirmationCode = randomstring.generate(20)  //this works. generates token for each user
+   //result.value.secretToken = secretToken
+  //flag account as inactive before confirmation
+    //User.status = 'Pending confirmation'
+
+
+    
+
+    //req.flash flashes error messages: req.flash('error', 'Username ${username} already used')
+  UserModel.create({username, email, password: securePW, confirmationCode, status: 'Pending confirmation'})
     .then(() => {
       console.log('im here')
       res.redirect('/')
@@ -92,4 +106,4 @@ router.get('/profile', checkAuthStat, (req, res, next) => {
     res.render('auth/profile', {name: req.session.loggedInUser.username})
 })
 
-module.exports = router;
+module.exports = router
