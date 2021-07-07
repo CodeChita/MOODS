@@ -20,24 +20,89 @@
             labels: {{{chartLabels}}},
 
             datasets: [{
-                label: 'my general mood',
+                label: 'general mood',
                 data: {{{moodData}}},
                 fill: false,
                 borderColor: 'rgb(75, 192, 192)',
                 tension: 1
             },
             {
-                label: 'my stress level',
+                label: 'stress',
                 data: {{{stressData}}},
                 fill: false,
                 borderColor: 'rgb(153, 0, 0)',
                 tension: 1
             },
             {
-                label: 'my sleep level',
+                label: 'sleep',
                 data: {{{sleepData}}},
                 fill: false,
                 borderColor: 'rgb(51, 102 ,0)',
+                tension: 1    
+            },
+            
+            {
+                label: 'sports',
+                data: {{{sportData}}},
+                fill: false,
+                borderColor: 'rgb(255, 140, 0)',   //ab hier farben ändern
+                tension: 1    
+            },
+            
+            {
+                label: 'work life',
+                data: {{{workData}}},
+                fill: false,
+                borderColor: 'rgb(255, 185, 15)',
+                tension: 1    
+            },
+            
+            {
+                label: 'social contacts',
+                data: {{{socialsData}}},
+                fill: false,
+                borderColor: 'rgb(139, 0, 139)',
+                tension: 1    
+            },
+            
+            
+            {
+                label: 'self medication',    
+                data: {{{drugData}}},
+                fill: false,
+                borderColor: 'rgb(139, 69, 19)',
+                tension: 1    
+            },
+
+            {
+                label: 'menstruation',       
+                data: {{{menstruationData}}},
+                fill: false,
+                borderColor: 'rgb(255, 0, 255)',
+                tension: 1    
+            },
+            
+            {
+                label: 'weather',    
+                data: {{{weatherData}}},
+                fill: false,
+                borderColor: 'rgb(139, 131, 120)',
+                tension: 1    
+            },
+            
+            {
+                label: 'medication',   //
+                data: {{{medicationData}},
+                fill: false,
+                borderColor: 'rgb(85, 26, 139)',
+                tension: 1    
+            },
+
+            {
+                label: 'nutrition / food',
+                data: {{{nutritionData}},
+                fill: false,
+                borderColor: 'rgb(50, 205, 50)',
                 tension: 1    
             }]
         },

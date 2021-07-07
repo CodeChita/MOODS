@@ -25,10 +25,20 @@ router.post('/createmood', (req, res, next) =>{
 //ROUTE TO SHOW CHART
     router.get("/statistics", (req, res, next) => {
         const user = req.session.loggedInUser
+        let chartLabels = []
         let moodData = []
         let stressData = []
         let sleepData = []
-        let chartLabels = []
+        let sportData= [] 
+        let socialsData=[] 
+        let workData = []
+
+        let drugData = []
+        
+        let menstruationData = []
+        let weatherData = [] 
+        let medicationData= [] 
+        let nutritionData = []
      
        
         
@@ -40,21 +50,39 @@ router.post('/createmood', (req, res, next) =>{
                     let creationTime = new Date(mood.createdAt).toLocaleTimeString()
                     let ourTimestamp = creationDate.concat(' TIME: ', creationTime)
 
+                    chartLabels.push(ourTimestamp)
 
                     moodData.push(Number(mood.mood))
                     stressData.push(Number(mood.stress))
                     sleepData.push(Number(mood.sleep))
-                    chartLabels.push(ourTimestamp)
+                    sportData.push(Number(mood.sport))
+                    socialsData.push(Number(mood.socials))
+                    workData.push(Number(mood.work))
+                    drugData.push(Number(mood.drugs))
+                    menstruationData.push(Number(mood.menstruation))
+                    weatherData.push(Number(mood.weather))
+                    medicationData.push(Number(mood.medication))
+                    nutritionData.push(Number(mood.nutrition))
                    
 
                 })
                 
               res.render("auth/statistics.hbs",  {   
+
+                    chartLabels: JSON.stringify(chartLabels),
                   
                     moodData: JSON.stringify(moodData),
                     stressData: JSON.stringify(stressData),
                     sleepData: JSON.stringify(sleepData),
-                    chartLabels: JSON.stringify(chartLabels)
+                    sportData: JSON.stringify(sportData),
+                    socialsData: JSON.stringify(socialsData),
+                    workData: JSON.stringify(workData),
+                    drugData: JSON.stringify(drugData),
+                    menstruationData: JSON.stringify(menstruationData),
+                    weatherData: JSON.stringify(weatherData),
+                    medicationData: JSON.stringify(medicationData),
+                    nutritionData: JSON.stringify(nutritionData)
+            
                 });
             })   
     }); 

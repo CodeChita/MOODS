@@ -7,13 +7,13 @@ const randomstring = require("randomstring");
 
 
 //GET logout
-// router.get("/logout", (req, res, next) => {
-//   req.session.destroy();
-//   req.app.locals.loggedIn = false;
-//   res.redirect("/");
-// });
+router.get("/logout", (req, res, next) => {
+req.session.destroy();
+req.app.locals.loggedIn = false;
+res.redirect("/");
+});
 
-//POST login  (also on home screen)
+//POST login
 router.post("/", (req, res, next) => {
   const { username, password } = req.body;
   if (!username || !password) {
@@ -86,22 +86,21 @@ router.post("/signup", (req, res, next) => {
     });
 
   //route to send confirmation mail when signup posted
-
-  const confirmationCode = randomstring.generate(20); //<---------------
+  const confirmationCode = randomstring.generate(20); 
   const message =
   `Dear new community member, this is to confirm your MOODS account. Please click on the following URL to verify your account: http://localhost:3000/auth/confirm/${confirmationCode} See you soon,Your MOODS team :)`;
   let { email, username } = req.body;
   let transporter = nodemailer.createTransport({
-    service: "Gmail",
+    service: "Outlook",
     auth: {
-      user: process.env.NM_USER,
-      pass: process.env.NM_PASSWORD, //where to put password??     <-------- store password
+      user: process.env.NM_USER,     
+      pass: process.env.NM_PASSWORD, 
     },
   });
   transporter
     .sendMail({
-      from: '"MOODS" <sinah.scholz1@gmail.com>',
-      to: "receiver@myawesomereceiver.com",
+      from: '"MOODS" <moods-hello@outlook.com>',
+      to: {email},
       subject: "Welcome to MOODS- Please confirm your account",
       text: message,
       html: `<b>${message}</b>`,
@@ -110,7 +109,6 @@ router.post("/signup", (req, res, next) => {
   .catch((error) => console.log(error)); //<-------------------
 
 
-  //req.flash flashes error messages: req.flash('error', 'Username ${username} already used'). store status as well?
   UserModel.create({ username, email, password: securePW, confirmationCode})
     .then(() => {
       res.redirect("/");
@@ -120,7 +118,7 @@ router.post("/signup", (req, res, next) => {
     });
 });
 
-//user clicks on confirmation code in mail
+
 
 //create custom middleware for authentication
 
