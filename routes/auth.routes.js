@@ -89,6 +89,7 @@ router.post("/signup", (req, res, next) => {
       next();
     });
 
+
   //route to send confirmation mail when signup posted
   const confirmationCode = randomstring.generate(20); 
   const message =
@@ -109,18 +110,15 @@ router.post("/signup", (req, res, next) => {
       text: message,
       html: `<b>${message}</b>`,
     })
-  //.then((info) => // create the user
-  //.catch((error) => console.log(error)); //<-------------------
+    
+  .then(() => {
+  UserModel.create({ username, email, password: securePW, confirmationCode}),
+  res.redirect("/");
+  res.render('We sent you an email to verify your account. Please follow the instructions.')
+  })
 
-
-  UserModel.create({ username, email, password: securePW, confirmationCode})
-    .then(() => {
-      res.redirect("/");
-      
-
-
-    })
-    .catch((err) => {
+ .catch((err) => {
+      res.render('auth/signup', {error: 'Sorry, something went worng. Please sign up again.'})
       next(err);
     });
 });
