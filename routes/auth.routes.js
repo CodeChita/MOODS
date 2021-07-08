@@ -15,7 +15,7 @@ res.redirect("/");
 
 //POST login
 router.post("/", (req, res, next) => {
-  const { username, password } = req.body;
+  const { username, password} = req.body;
   if (!username || !password) {
     res.render("index.hbs", {
       error: "Please enter your username and password to continue",
@@ -51,13 +51,13 @@ router.post("/signup", (req, res, next) => {
   //grab username & password & mail from form
   const { username, password, email } = req.body;
   const mailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
   const passRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{9,}$/;
   const salt = bcrypt.genSaltSync(12);
   const securePW = bcrypt.hashSync(password, salt);
-  // //check if username & password both entered //made a ternaryoperator
+
+  // //check if username & password both entered
   if (!username || !password) {
-    res.render("auth/signup.hbs", { error: "please fill in all fields" });
+    res.render("auth/signup.hbs", {error: "please fill in all fields" });
     return;
   }
   if (!mailRegex.test(email)) {
@@ -128,7 +128,6 @@ router.post("/signup", (req, res, next) => {
 
 
 //create custom middleware for authentication
-
 const checkAuthStat = (req, res, next) => {
   req.session.loggedInUser ? next() : res.redirect("/")
 }
