@@ -102,7 +102,7 @@ router.post("/signup", (req, res, next) => {
   const confirmationCode = randomstring.generate(20); 
   const message =
   `Dear new community member, this is to confirm your MOODS account. Please click on the following URL to verify your account: http://localhost:3000/auth/confirm/${confirmationCode} See you soon,Your MOODS team :)`;
-  let { email, username } = req.body;
+ // let { email, username } = req.body;
   let transporter = nodemailer.createTransport({
     service: "Outlook",
     auth: {
