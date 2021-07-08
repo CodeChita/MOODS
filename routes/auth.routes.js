@@ -23,7 +23,7 @@ router.post('/', (req, res, next) => {
 
   UserModel.findOne({ username })
     .then((user) => {
-        if(!status =='Active'){
+        if(!user.status =='Active'){
           res.render("index", {error: 'Please confirm your account first'})
           return 
       }
