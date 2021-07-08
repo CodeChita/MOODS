@@ -42,7 +42,9 @@ router.post("/", (req, res, next) => {
 
 //check if status = active
 //tbd
-/*if(!status =='active'){
+/*UserModel.findOne({ username })
+    .then((user) => {
+/*if(!status =='Active'){
 
 
 } */
