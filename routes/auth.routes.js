@@ -97,8 +97,8 @@ router.post("/signup", (req, res, next) => {
     });
 
   //route to send confirmation mail when signup posted
-  const confirmationCode = randomstring.generate(20);
-  const message = `Dear new community member, this is to confirm your MOODS account. Please click on the following URL to verify your account: https://m00ds.herokuapp.com/${confirmationCode} See you soon,Your MOODS team :)`;
+  const confirmationCode = randomstring.generate(20); 
+  const message = `Dear new community member, this is to confirm your MOODS account. Please click on the following URL to verify your account: https://m00ds.herokuapp.com/auth/confirm/${confirmationCode} See you soon,Your MOODS team :)`;
   // let { email, username } = req.body;
   let transporter = nodemailer.createTransport({
     service: "Outlook",
