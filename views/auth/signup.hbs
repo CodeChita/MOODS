@@ -1,14 +1,21 @@
-<h1>Become part of the community.</h1>
+{{!-- <h1>Become part of the community.</h1> --}}
+<a href="/" class="brand-logo-main"><button>:):</button></a>
 
-<form action="/signup" method="POST">
+<div class="container">
+<div class="inputs">
+<form style="text-decoration: none" action="/signup" method="POST">
+ {{#if error}}
+        <p> {{error}} </p>
+    {{/if}}
     <label for="username">Choose a username:</label>
     <input type="text" name="username" placeholder="How do you want us to call you?"><br><br>
     <label for="password">Choose a password:</label>
     <input type="password" name="password" placeholder="Please choose your password"><br><br>
     <label for="email">What is your email:</label>
     <input type="email" name="email" placeholder="hello@moods.com"><br><br>
-    <button type="submit">Sign up</button><br>
+   
+
+    </div>
+    <button class='btn' type="submit">Sign up</button><br>
 </form>
-{{#if error}}
-    <p> {{error}} </p>
-{{/if}}
+

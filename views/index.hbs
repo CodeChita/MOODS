@@ -1,20 +1,17 @@
-<h1>{{title}} </h1>
-<p>here for you.</p>
-
-<h1>HELLO</h1>
-
-<form action="/" method="POST">
-    <label for="username">Your username:</label>
-    <input type="text" name="username" id ="username" placeholder="Please enter your username."><br><br>
-    <label for="password">Your password:</label>
-    <input type="password" name="password" id="password" placeholder="Please enter your password."><br><br>
-    <button type="submit">Sign in</button><br>
+<div class="container">
+  <div class="brand-logo">:):</div>
+  <div class="brand-title">MOODS</div>
+  <div class="inputs">
+      <form action="/" method="POST">
+    <label class='form' for="username">Your username:</label>
+    <input class='form' type="text" name="username" id ="username" placeholder="Please enter your username."><br><br>
+    <label  class='form' for="password">Your password:</label>
+    <input class='form' type="password" name="password" id="password" placeholder="Please enter your password."><br><br>
+    <button class='btn' type="submit">Sign in</button>
 </form>
-<hr>
-<p>New here?
-    <a href="/signup">Sign up</a>
-</p>
-
+</div>
+ <a href="/signup" id='signup'><button>Sign up</button></a>
+</div>
 {{#if error}}
     <p> {{error}} </p>
 {{/if}}
