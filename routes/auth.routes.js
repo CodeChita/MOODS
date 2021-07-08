@@ -40,6 +40,14 @@ router.post("/", (req, res, next) => {
     });
 });
 
+
+//check if status = active
+//tbd
+
+
+
+
+
 //_____________GET signup_____________
 router.get("/signup", (req, res, next) => {
   res.render("auth/signup");
@@ -110,9 +118,9 @@ router.post("/signup", (req, res, next) => {
       text: message,
       html: `<b>${message}</b>`,
     })
-    
+
   .then(() => {
-  UserModel.create({ username, email, password: securePW, confirmationCode}),
+  UserModel.create({ username, email, password: securePW, confirmationCode, status}),
   res.redirect("/");
   res.render('We sent you an email to verify your account. Please follow the instructions.')
   })
