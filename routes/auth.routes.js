@@ -1,8 +1,10 @@
 const router = require("express").Router();
 const UserModel = require("../models/User.model");
-const MoodModel = require("../models/Mood.model")
-const bcrypt = require('bcryptjs')
-const nodemailer = require('nodemailer')
+const MoodModel = require("../models/Mood.model");
+const bcrypt = require("bcryptjs");
+const nodemailer = require("nodemailer");
+const randomstring = require("randomstring");
+
 
 // GET logout
 router.get("/logout", (req, res, next) => {
@@ -19,31 +21,30 @@ router.post('/', (req, res, next) => {
     return
   }
 
-  UserModel.findOne({username})
+  UserModel.findOne({ username })
     .then((user) => {
-      if(user){
+      if (user) {
         const comparedPassword = bcrypt.compareSync(password, user.password);
-        if(comparedPassword){
+        if (comparedPassword) {
           req.session.loggedInUser = user;
           req.app.locals.isLoggedin = true;
           res.redirect("/profile");
           return
         }
-        return
       }
       else
         res.render("index", {error: 'wrong password or username'})
     })
     .catch((err) => {
-      console.log('check')
-      next(err)
-    })
-})
+      console.log("check");
+      next(err);
+    });
+});
 
 //_____________GET signup_____________
-router.get('/signup', (req,res,next) => {
-    res.render('auth/signup')
-})
+router.get("/signup", (req, res, next) => {
+  res.render("auth/signup");
+});
 
 //_____________POST signup____________
 router.post('/signup', (req, res, next) => {
@@ -54,7 +55,7 @@ router.post('/signup', (req, res, next) => {
   const securePW = bcrypt.hashSync(password, salt)
 
   if(!username || !password){
-    res.render('auth/signup.hbs', {error: 'please fill in all fields',})
+    res.render('auth/signup.hbs', {error: 'please fill in all fields'})
     return
   }
 
@@ -62,37 +63,76 @@ router.post('/signup', (req, res, next) => {
     res.render('auth/signup', {error: 'Your email needs to be of a valid format, e.g. hello@moods.com'})
     return
   }
-  if(!passRegex.test(password)){
-    res.render('auth/signup', {error: 'For security reasons, your password has to include at least 9 characters, at least one number, at least one special character.'})
-    return
+  if (!passRegex.test(password)) {
+    res.render("auth/signup", {error: "For security reasons, your password has to include at least 9 characters, at least one number, at least one special character."});
+    return;
   }
 
-  // check if username is unique
-  UserModel.findOne({username})
+  //check if username is unique
+  UserModel.findOne({ username })
     .then((username) => {
-      if (username){
-        res.render('auth/signup',{error:`Sorry, the username ${username.username} is already used by someone else. Please choose another one.`})
-        return 
+      if(username){
+        res.render("auth/signup", {error: `Sorry, the username ${user.username} is already used by someone else. Please choose another one.`});
+        return
       }
     })
     .catch(() => {
-      next()
-    })
+      next();
+    });
 
-  UserModel.create({username, email, password: securePW})
+  //route to send confirmation mail when signup posted
+  const confirmationCode = randomstring.generate(20); 
+  const message = `Dear new community member, this is to confirm your MOODS account. Please click on the following URL to verify your account: http://localhost:3000/auth/confirm/${confirmationCode} See you soon,Your MOODS team :)`;
+  // let { email, username } = req.body;
+  let transporter = nodemailer.createTransport({
+    service: "Outlook",
+    auth: {
+      user: process.env.NM_USER,     
+      pass: process.env.NM_PASSWORD, 
+    },
+  });
+  transporter
+    .sendMail({
+      from: '"MOODS" <moods-hello@outlook.com>',
+      to: email,
+      subject: "Welcome to MOODS- Please confirm your account",
+      text: message,
+      html: `<b>${message}</b>`,
+    })
+  //.then((info) => // create the user
+  //.catch((error) => console.log(error)); //<-------------------
+
+
+  UserModel.create({ username, email, password: securePW, confirmationCode})
     .then(() => {
-      console.log('im here')
-      res.redirect('/')
-      return
+      res.redirect("/");
     })
     .catch((err) => {
-      next(err)
-    })
-})
+      next(err);
+    });
+});
 
-// create custom middleware for authentication
- checkAuthStat = (req, res, next) => 
-req.session.loggedInUser ? next() : res.redirect('/') 
+
+
+//create custom middleware for authentication
+const checkAuthStat = (req, res, next) => {
+  req.session.loggedInUser ? next() : res.redirect("/")
+}
+  
+router.get("/profile", checkAuthStat, (req, res, next) => {
+    res.render("auth/profile", { name: req.session.loggedInUser.username });
+  });
+
+router.get("/auth/confirm/:confirmationCode",(req, res, next) => {
+  UserModel.findOneAndUpdate({confirmationCode: req.params.confirmationCode}, {status: 'Active'})
+    .then(()=> {
+      user.status == "Active";
+      res.redirect('/')
+    })
+    .catch(()=> {
+    })
+
+  })
 
 router.get('/profile', checkAuthStat, (req, res, next) => {
   if(req.session.loggedInUser.mainUser == false){
@@ -146,4 +186,4 @@ router.post('/add-loved-one', (req, res, next) => {
     })
 })
 
-module.exports = router;
+  module.exports = router

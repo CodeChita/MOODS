@@ -1,18 +1,36 @@
 const { Schema, model } = require("mongoose");
-// require('./Mood.model')
-// TODO: Please make sure you edit the user model to whatever makes sense in this case
+require('./Mood.model')
+
 const userSchema = new Schema({
   username: {
     type: String,
+    unique: true,
+    required: true
   },
-  password: String,
+  password:{
+   type: String,
+   required: true
+   
+  },
+  
   email: {
-    type: String,
+type: String,
+required: true
+
   },
-  mainUser: {
-    type: Boolean,
-    default: true
+
+  confirmationCode:{
+
+    type: String,
+    unique: true
+  },
+
+  status: {
+    type: String,
+    enum: ['Pending confirmation', 'Active'],
+    default: 'Pending confirmation'
   }
+
 });
 
 

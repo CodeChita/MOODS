@@ -11,6 +11,14 @@ const MoodSchema = new Schema({
     stress: {
         type: String
     },
+    sport: String,
+    socials: String,
+    work: String,
+    drugs: String,
+    menstruation: String,
+    weather: String,
+    medication: String,
+    nutrition: String,
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
