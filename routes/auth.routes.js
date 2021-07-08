@@ -98,7 +98,7 @@ router.post("/signup", (req, res, next) => {
 
   //route to send confirmation mail when signup posted
   const confirmationCode = randomstring.generate(20);
-  const message = `Dear new community member, this is to confirm your MOODS account. Please click on the following URL to verify your account: http://localhost:3000/auth/confirm/${confirmationCode} See you soon,Your MOODS team :)`;
+  const message = `Dear new community member, this is to confirm your MOODS account. Please click on the following URL to verify your account: https://m00ds.herokuapp.com/${confirmationCode} See you soon,Your MOODS team :)`;
   // let { email, username } = req.body;
   let transporter = nodemailer.createTransport({
     service: "Outlook",
@@ -125,13 +125,15 @@ router.post("/signup", (req, res, next) => {
         status: "Pending confirmation",
       })
       .then(() => {
-        res.redirect("/");
+        res.render('../views/index.hbs'
+        //, {message: 'We sent you an email to verify your account. Please follow the instructions.'}
+        );
       });
     })
 
     .catch((err) => {
       res.render("auth/signup", {
-        error: "Sorry, something went worng. Please sign up again.",
+        error: "Sorry, something went worng. Please sign up again."
       });
     });
 });
@@ -147,13 +149,13 @@ router.get("/profile", checkAuthStat, (req, res, next) => {
 
 
 router.get("/auth/confirm/:confirmationCode", (req, res, next) => {
-  console.log('hiii')
+
   UserModel.findOneAndUpdate(
     { confirmationCode: req.params.confirmationCode },
     { status: "Active" }
   )
     .then(() => {
-      console.log('hello')
+      
       res.redirect("/");
     
     })
