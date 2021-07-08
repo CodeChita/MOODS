@@ -7,9 +7,9 @@ router.get('/createmood', (req, res, next) => {
 })
 
 router.post('/createmood', (req, res, next) =>{
-    const {mood, sleep, stress} = req.body
+    const {mood, sleep, stress, sport, socials, work, drugs, menstruation, weather, medication, nutrition} = req.body
     const user = req.session.loggedInUser
-    MoodModel.create({mood, sleep, stress, userId: user._id})  
+    MoodModel.create({mood, sleep, stress, sport, socials, work, drugs, menstruation, weather, medication, nutrition, userId: user._id})  
     .then(() => {
         MoodModel.find({userId: user._id})
         .then((moods) => {
@@ -32,9 +32,7 @@ router.post('/createmood', (req, res, next) =>{
         let sportData= [] 
         let socialsData=[] 
         let workData = []
-
         let drugData = []
-        
         let menstruationData = []
         let weatherData = [] 
         let medicationData= [] 

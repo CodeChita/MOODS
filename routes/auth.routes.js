@@ -77,9 +77,13 @@ router.post("/signup", (req, res, next) => {
   //check if username is unique
   UserModel.findOne({ username })
     .then((username) => {
-      res.render("auth/signup", {
-        error: `Sorry, the username ${user.username} is already used by someone else. Please choose another one.`,
-      });
+      if(username){
+        res.render("auth/signup", {
+          error: `Sorry, the username ${user.username} is already used by someone else. Please choose another one.`,
+        });
+        return
+      }
+      
     })
     .catch((username, email, password) => {
       next();
@@ -89,7 +93,7 @@ router.post("/signup", (req, res, next) => {
   const confirmationCode = randomstring.generate(20); 
   const message =
   `Dear new community member, this is to confirm your MOODS account. Please click on the following URL to verify your account: http://localhost:3000/auth/confirm/${confirmationCode} See you soon,Your MOODS team :)`;
-  //let { email, username } = req.body;
+  let { email, username } = req.body;
   let transporter = nodemailer.createTransport({
     service: "Outlook",
     auth: {
@@ -100,18 +104,21 @@ router.post("/signup", (req, res, next) => {
   transporter
     .sendMail({
       from: '"MOODS" <moods-hello@outlook.com>',
-      to: {email},
+      to: email,
       subject: "Welcome to MOODS- Please confirm your account",
       text: message,
       html: `<b>${message}</b>`,
     })
-  .then((info) => console.log(info)) //<------------console log
-  .catch((error) => console.log(error)); //<-------------------
+  //.then((info) => // create the user
+  //.catch((error) => console.log(error)); //<-------------------
 
 
   UserModel.create({ username, email, password: securePW, confirmationCode})
     .then(() => {
       res.redirect("/");
+      
+
+
     })
     .catch((err) => {
       next(err);
