@@ -23,6 +23,10 @@ router.post('/', (req, res, next) => {
 
   UserModel.findOne({ username })
     .then((user) => {
+        if(!status =='Active'){
+          res.render("index", {error: 'Please confirm your account first'})
+          return 
+      }
       if (user) {
         const comparedPassword = bcrypt.compareSync(password, user.password);
         if (comparedPassword) {
@@ -39,15 +43,16 @@ router.post('/', (req, res, next) => {
       console.log("check");
       next(err);
     });
+
+
+
 });
 
-
-//check if status = active
-//tbd
-
-
-
-
+// UserModel.findOne({ username })
+//     .then((user) => {
+//   if(!status =='Active'){
+//     return 
+// }
 
 //_____________GET signup_____________
 router.get("/signup", (req, res, next) => {
