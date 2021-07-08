@@ -134,10 +134,10 @@ router.get("/profile", checkAuthStat, (req, res, next) => {
 router.get("/auth/confirm/:confirmationCode",(req, res, next) => {
   UserModel.findOneAndUpdate({confirmationCode: req.params.confirmationCode}, {status: 'Active'})
     .then(()=> {
-      user.status == "Active";
       res.redirect('/')
     })
-    .catch(()=> {
+    .catch((err)=> {
+      next(err)
     })
 
   })
