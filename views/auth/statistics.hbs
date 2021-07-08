@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,10 +7,13 @@
     <title>My Moods</title>
     <script  src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.1/chart.min.js"  integrity="sha512-BqNYFBAzGfZDnIWSAEGZSD/QFKeVxms2dIBPfw11gZubWwKUjEgmFUtUls8vZ6xTRZN/jaXGHD/ZaxD9+fDo0A=="  crossorigin="anonymous"></script>
 </head>
-<body>
+<body> --}}
+    <a href="/" class="brand-logo-main"><button>:):</button></a>
+    <div class="container">
     <h2>Check out your moods:</h2>
-
-    <canvas  id="moodChart"  width="400"  height="400"></canvas>
+    <canvas  id="moodChart"  width="20" height="20"></canvas>
+    <a style="" href="/profile"><button>back</button></a> <br>
+</div>
 <script>
     const ctx = document.getElementById('moodChart').getContext('2d');
 
@@ -18,7 +21,6 @@
         type: 'line',
         data: {
             labels: {{{chartLabels}}},
-
             datasets: [{
                 label: 'general mood',
                 data: {{{moodData}}},
@@ -56,7 +58,6 @@
                 borderColor: 'rgb(255, 185, 15)',
                 tension: 1    
             },
-            
             {
                 label: 'social contacts',
                 data: {{{socialsData}}},
@@ -64,8 +65,6 @@
                 borderColor: 'rgb(139, 0, 139)',
                 tension: 1    
             },
-            
-            
             {
                 label: 'self medication',    
                 data: {{{drugData}}},
@@ -73,7 +72,6 @@
                 borderColor: 'rgb(139, 69, 19)',
                 tension: 1    
             },
-
             {
                 label: 'menstruation',       
                 data: {{{menstruationData}}},
@@ -81,7 +79,6 @@
                 borderColor: 'rgb(255, 0, 255)',
                 tension: 1    
             },
-            
             {
                 label: 'weather',    
                 data: {{{weatherData}}},
@@ -89,7 +86,6 @@
                 borderColor: 'rgb(139, 131, 120)',
                 tension: 1    
             },
-            
             {
                 label: 'medication',   
                 data: {{{medicationData}}},
@@ -97,7 +93,6 @@
                 borderColor: 'rgb(85, 26, 139)',
                 tension: 1    
             },
-
             {
                 label: 'nutrition / food',
                 data: {{{nutritionData}}},
@@ -119,5 +114,5 @@
     });
 </script>
 
-</body>
-</html>
+{{!-- </body>
+</html> --}}

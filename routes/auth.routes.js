@@ -40,8 +40,7 @@ router.post('/', (req, res, next) => {
         res.render("index", {error: 'wrong password or username'})
     })
     .catch((err) => {
-      console.log("check");
-      next(err);
+      res.render("index", {error: 'wrong password or username'})
     });
 
 
