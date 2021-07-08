@@ -146,7 +146,7 @@ router.get("/auth/confirm/:confirmationCode",(req, res, next) => {
 router.get('/profile', checkAuthStat, (req, res, next) => {
   if(req.session.loggedInUser.mainUser == false){
     const loved = true}
-    res.render('auth/profile', {name: req.session.loggedInUser.username,})
+    res.render('auth/profile', {name: req.session.loggedInUser.username})
 })
 
 router.get('/add-loved-one', (req, res, next) => {
