@@ -14,13 +14,11 @@ const userSchema = new Schema({
   },
   
   email: {
-type: String,
-required: true
-
+    type: String,
+    required: true
   },
 
   confirmationCode:{
-
     type: String,
     unique: true
   },
@@ -29,7 +27,7 @@ required: true
     type: String,
     enum: ['Pending confirmation', 'Active'],
     default: 'Pending confirmation'
-  }
+  }, 
 
 });
 

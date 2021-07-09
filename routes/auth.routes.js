@@ -70,7 +70,6 @@ router.post('/signup', (req, res, next) => {
     res.render('auth/signup.hbs', {error: 'please fill in all fields'})
     return
   }
-
   if(!mailRegex.test(email)){
     res.render('auth/signup', {error: 'Your email needs to be of a valid format, e.g. hello@moods.com'})
     return
