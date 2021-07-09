@@ -1,8 +1,9 @@
 {{!-- <h1>Become part of the community.</h1> --}}
-<a href="/" class="brand-logo-main"><button>:):</button></a>
+
 
 <div class="container">
 <div class="inputs">
+    <a href="/" class="brand-logo-main"><button>:):</button></a> <br>
 <form style="text-decoration: none" action="/signup" method="POST">
  {{#if error}}
         <p> {{error}} </p>
@@ -13,9 +14,8 @@
     <input type="password" name="password" placeholder="Please choose your password"><br><br>
     <label for="email">What is your email:</label>
     <input type="email" name="email" placeholder="hello@moods.com"><br><br>
-   
-
-    </div>
     <button class='btn' type="submit">Sign up</button><br>
+    </div>
+    </div>
 </form>
 
