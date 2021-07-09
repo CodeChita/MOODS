@@ -43,15 +43,8 @@ router.post('/', (req, res, next) => {
       res.render("index", {error: 'wrong password or username'})
     });
 
-
-
 });
 
-// UserModel.findOne({ username })
-//     .then((user) => {
-//   if(!status =='Active'){
-//     return 
-// }
 
 //_____________GET signup_____________
 router.get("/signup", (req, res, next) => {
@@ -116,13 +109,14 @@ router.post('/signup', (req, res, next) => {
     .then(() => {
       res.redirect("/");
     })
-  })
- .catch((err) => {
-      console.log(err)
-      res.render('auth/signup', {error: 'Sorry, something went worng. Please sign up again.'})
+
+    .catch((err) => {
+      res.render("auth/signup", {
+        error: "Sorry, something went wrong. Please sign up again."
+      });
     });
 });
-
+})
 
 
 //create custom middleware for authentication
