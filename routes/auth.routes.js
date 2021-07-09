@@ -131,7 +131,7 @@ router.post("/signup", (req, res, next) => {
 
     .catch((err) => {
       res.render("auth/signup", {
-        error: "Sorry, something went worng. Please sign up again.",
+        error: "Sorry, something went worng. Please sign up again."
       });
     });
 });
