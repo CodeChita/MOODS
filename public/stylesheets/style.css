@@ -14,16 +14,20 @@ body {
   overflow: hidden;
   font-family: poppins;
 }
+
 form {
   display: flex;
   flex-direction: column;
-  align-content: space-between;
+  align-content: space-between
 }
 
 .container {
-  text-align: center;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
   width: 450px;
-  height: 650px;
+  height: 700px;
   border-radius: 20px;
   padding: 40px;
   box-sizing: border-box;
@@ -50,11 +54,6 @@ form {
   font-size: 1.8rem;
   color: #f2e41d;
   letter-spacing: 1px;
-}
-
-.inputs {
-  text-align: center;
-  margin-top: 30px;
 }
 
 label, input, button {
@@ -103,11 +102,11 @@ button:hover {
   box-shadow: none;
 }
 
-h1 {
+/* h1 {
   position: absolute;
   top: 0;
   left: 0;
-}
+} */
 
 .brand-logo-main {
   display: flex;
@@ -120,8 +119,4 @@ h1 {
   border-radius: 50%;
   box-sizing: border-box;
   box-shadow: 7px 7px 10px #cbced1, -7px -7px 10px white;
-}
-
-#layout {
-  visibility: hidden;
 }
