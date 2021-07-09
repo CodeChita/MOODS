@@ -24,7 +24,7 @@ router.post('/', (req, res, next) => {
   UserModel.findOne({ username })
     .then((user) => {
         if(user.status !=='Active'){
-          res.render("index", {error: 'Please confirm your account first'})
+          res.render("index", {error: 'Please confirm your account first. We send you an e-mail'})
           return 
       }
       if (user) {
@@ -87,7 +87,7 @@ router.post('/signup', (req, res, next) => {
 
   //route to send confirmation mail when signup posted
   const confirmationCode = randomstring.generate(20); 
-  const message = `Dear new community member, this is to confirm your MOODS account. Please click on the following URL to verify your account: https://m00ds.herokuapp.com/auth/confirm/${confirmationCode} See you soon,Your MOODS team :)`;
+  const message = `Dear new community member, this is to confirm your MOODS account. Please click on the following URL to verify your account: https://m00ds.herokuapp.com/auth/confirm/${confirmationCode} See you soon,Your MOODS team :):`;
   // let { email, username } = req.body;
   let transporter = nodemailer.createTransport({
     service: "Gmail",
